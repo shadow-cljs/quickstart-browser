@@ -1,0 +1,25 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src"]
+
+ :dependencies
+ []
+
+ :builds
+ {:app {:target :browser
+        :output-dir "public/js"
+        :asset-path "/js"
+
+        :modules
+        {:main ;; <- becomes public/js/main.js
+         {:entries [starter.browser]}}
+
+        :devtools
+        ;; before live-reloading any code call this function
+        {:before-load starter.browser/stop
+         ;; after live-reloading finishes call this function
+         :after-load starter.browser/start
+         ;; serve the public directory over http at port 8020
+         :http-root "public"
+         :http-port 8020}
+        }}}
