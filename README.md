@@ -2,7 +2,12 @@
 
 This is a minimum template you can use as the basis for CLJS projects intended to run in the browser.
 
-You must have [`npm v5+`](https://www.npmjs.com/) installed for this example. You may also use `yarn`, just adjust the `npm&npmx` commands accordingly. `java` must also be installed.
+## Required Software
+
+- [node.js v6.0.0+](https://nodejs.org/en/download/)
+- [Java8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (Java9 has some issues, so stick with Java SE 8 for now). OpenJDK also works.
+
+## Running the Example
 
 ```bash
 git clone https://github.com/shadow-cljs/quickstart-browser.git quickstart
