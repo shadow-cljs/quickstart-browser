@@ -14,12 +14,8 @@
         {:main ;; <- becomes public/js/main.js
          {:entries [starter.browser]}}
 
+        ;; start a development http server on http://localhost:8020
         :devtools
-        ;; before live-reloading any code call this function
-        {:before-load starter.browser/stop
-         ;; after live-reloading finishes call this function
-         :after-load starter.browser/start
-         ;; serve the public directory over http at port 8020
-         :http-root "public"
+        {:http-root "public"
          :http-port 8020}
         }}}

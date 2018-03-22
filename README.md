@@ -4,8 +4,15 @@ This is a minimum template you can use as the basis for CLJS projects intended t
 
 ## Required Software
 
-- [node.js v6.0.0+](https://nodejs.org/en/download/)
-- [Java8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (Java9 has some issues, so stick with Java SE 8 for now). OpenJDK also works.
+- [node.js (v6.0.0+)](https://nodejs.org/en/download/)
+- [Java (8+)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+
+## User Guide
+
+This repository only shows a basic example of how to get a basic Browser build.
+
+Please refer to the full [User Guide](https://shadow-cljs.github.io/docs/UsersGuide.html) for more information.
+
 
 ## Running the Example
 
@@ -13,28 +20,26 @@ This is a minimum template you can use as the basis for CLJS projects intended t
 git clone https://github.com/shadow-cljs/quickstart-browser.git quickstart
 cd quickstart
 npm install
-npx shadow-cljs clj-repl
+npx shadow-cljs server
 ```
+
+This runs the `shadow-cljs` server process which all following commands will talk to. Just leave it running and open a new terminal to continue.
 
 The first startup takes a bit of time since it has to download all the dependencies and do some prep work. Once this is running we can get started.
 
 ```txt
-(shadow/watch :app)
+npx shadow-cljs watch app
 ```
 
-You do not have to do this at the REPL, you can also run `npx shadow-cljs watch app` in another terminal. The result will be the same.
+This will begin the compilation of the configured `:app` build and re-compile whenever you change a file.
 
-Either way you should see a message like this:
+When you see a "Build completed." message your build is ready to be used.
 
 ```txt
 [:app] Build completed. (23 files, 4 compiled, 0 warnings, 7.41s)
 ```
 
-When you do you can start using the integrated development server to open the page in the browser.
-
-```txt
-open http://localhost:8020
-```
+You can now then open [http://localhost:8020](http://localhost:8020).
 
 The app is only a very basic skeleton with the most useful development tools configured.
 
@@ -56,13 +61,9 @@ The app is only a very basic skeleton with the most useful development tools con
         {:main ;; <- becomes public/js/main.js
          {:entries [starter.browser]}}
 
+        ;; start a development http server on http://localhost:8020
         :devtools
-        ;; before live-reloading any code call this function
-        {:before-load starter.browser/stop
-         ;; after live-reloading finishes call this function
-         :after-load starter.browser/start
-         ;; serve the public directory over http at port 8020
-         :http-root "public"
+        {:http-root "public"
          :http-port 8020}
         }}}
 ```
@@ -72,8 +73,6 @@ It defines the `:app` build with the `:target` set to `:browser`. All output wil
 `:modules` defines the how the output should be bundled together. For now we just want one file. The `:main` module will be written to `public/js/main.js`, it will include the code from the `:entries` and all their dependencies.
 
 `:devtools` configures some useful development things. The `http://localhost:8020` server we used earlier is controlled by the `:http-port` and serves the `:http-root` directory.
-
-`:before-load` and `:after-load` are useful callbacks that will be used by the devtools when live-reloading code. They are optional but they control the live-reload. If you do not need any callbacks just configure `:autoload true`.
 
 The last part is the actual `index.html` that is loaded when you open `http://localhost:8020`. It loads the generated `/js/main.js` and then calls `start.browser.init` which we defined in the `src/start/browser.cljs`.
 
@@ -91,28 +90,25 @@ The last part is the actual `index.html` that is loaded when you open `http://lo
 </html>
 ```
 
-`init` is only called once and it calls `start` when done. During development the devtools will then call `stop` whenever it wants to reload some code. When its done doing that it will call `start` again but not `init`. You do not have to use this setup but it is what I recommend and it has worked well for me.
-
 ## Live reload
 
 To see the live reload in action you can edit the `src/start/browser.cljs`. Some output will be printed in the browser console.
 
 ## REPL
 
-During development it the REPL is very useful. The `clj-repl` process we started by default is a Clojure REPL which can control the `shadow-cljs` tool itself. Every command can also be directly used from the command line, so you do not have to use the REPL.
-
-To switch to the ClojureScript REPL for our build do
-
-```
-[1:0]~shadow.user=> (shadow/repl :app)
-[1:1]~cljs.user=>
-```
+During development it the REPL is very useful.
 
 From the command line use `npx shadow-cljs cljs-repl app`.
 
-This can now be used to eval code in the browser (assuming you still have it open). Try `(js/alert "Hi.")` and take it from there.
+```
+shadow-cljs - config .../shadow-cljs.edn version: 2.2.16
+shadow-cljs - connected to server
+[2:1]~cljs.user=>
+```
 
-You can get back to the Clojure REPL by typing `:repl/quit`. You can switch back to the CLJS REPL at any point.
+This can now be used to eval code in the browser (assuming you still have it open). Try `(js/alert "Hi.")` and take it from there. You might want to use `rlwrap npx shadow-cljs cljs-repl app` if you intend to type a lot here.
+
+You can exit the REPL by either `CTRL+C` or typing `:repl/quit`.
 
 ## Release
 
@@ -120,12 +116,7 @@ The `watch` process we started is all about development. It injects the code req
 
 The `release` action will remove all development code and run the code through the Closure Compiler to produce a minified `main.js` file. Since that will overwrite the file created by the `watch` we first need to stop that.
 
-```
-(shadow/stop-worker :app)
-(shadow/release :app)
-```
-
-Or in the command line stop the `npx shadow-cljs watch` process by CTRL+C and then `npx shadow-cljs release app`.
+Use `CTRL+C` to stop the `watch` process and instead run `npx shadow-cljs release app`.
 
 When done you can open `http://localhost:8020` and see the `release` build in action. At this point you would usually copy the `public` directory to the "production" web server.
 

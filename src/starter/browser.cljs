@@ -1,8 +1,7 @@
 (ns starter.browser)
 
-(defn start []
-  ;; start is called by init and after code reloading finishes
-  ;; this is controlled by the :after-load in the config
+;; start is called by init and after code reloading finishes
+(defn ^:dev/after-load start []
   (js/console.log "start"))
 
 (defn ^:export init []
@@ -12,7 +11,6 @@
   (js/console.log "init")
   (start))
 
-(defn stop []
-  ;; stop is called before any code is reloaded
-  ;; this is controlled by :before-load in the config
+;; this is called before any code is reloaded
+(defn ^:dev/before-load stop []
   (js/console.log "stop"))

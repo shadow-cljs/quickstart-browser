@@ -1,5 +1,5 @@
 {
   "devDependencies": {
-    "shadow-cljs": "^2.0.129"
+    "shadow-cljs": "^2.2.16"
   }
 }
