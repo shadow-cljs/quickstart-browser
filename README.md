@@ -5,7 +5,7 @@ This is a minimum template you can use as the basis for CLJS projects intended t
 ## Required Software
 
 - [node.js (v6.0.0+)](https://nodejs.org/en/download/)
-- [Java (8+)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- [Java JDK (8+)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or [Open JDK (8+)](http://jdk.java.net/10/)
 
 ## User Guide
 
