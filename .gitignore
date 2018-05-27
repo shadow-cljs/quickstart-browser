@@ -7,3 +7,5 @@
 /*.iml
 /.nrepl-port
 /.idea
+/yarn-error.log
+/out/node-tests.js

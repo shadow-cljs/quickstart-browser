@@ -1,0 +1,24 @@
+version: "2"
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./:$PWD
+    working_dir: $PWD
+    ports:
+      - "8020:8020" # app
+      - "9630:9630" # ws for hot code reload
+      - "9000:9000" # nrepl
+    command: bash -c "yarn install && yarn shadow-cljs server"
+
+  release:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./:$PWD
+    working_dir: $PWD
+    command: bash -c "yarn install && yarn shadow-cljs release app"

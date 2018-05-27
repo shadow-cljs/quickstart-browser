@@ -1,12 +1,15 @@
 ;; shadow-cljs configuration
 {:source-paths
- ["src"]
+ ["src" "test"]
 
  :dependencies
  []
 
+ :nrepl
+ {:port 9000}
+
  :builds
- {:app {:target :browser
+ {:app {:target     :browser
         :output-dir "public/js"
         :asset-path "/js"
 
@@ -17,5 +20,10 @@
         ;; start a development http server on http://localhost:8020
         :devtools
         {:http-root "public"
-         :http-port 8020}
-        }}}
+         :http-host "0.0.0.0"
+         :http-port 8020}}
+
+  :test {:target    :node-test
+         :output-to "out/node-tests.js"
+         :ns-regexp "-test$"
+         :autorun   true}}}
