@@ -46,53 +46,58 @@ The app is only a very basic skeleton with the most useful development tools con
 `shadow-cljs` is configured by the `shadow-cljs.edn` config. It looks like this:
 
 ```clojure
-{:source-paths
- ["src"] ;; .cljs files go here
+;; shadow-cljs configuration
+{:source-paths ; .cljs files go here
+ ["src/dev"
+  "src/main"
+  "src/test"] 
 
- :dependencies
- [] ;; covered later
+ :dependencies ; covered later
+ [] 
+
+ :dev-http ; starts a http dev server on http://localhost:8020 and serves `public`
+ {8020 "public"}
 
  :builds
- {:app {:target :browser
-        :output-dir "public/js"
-        :asset-path "/js"
+ {:app ; build identifier
+  {:target :browser
+   :output-dir "public/js"
+   :asset-path "/js"
 
-        :modules
-        {:main ;; <- becomes public/js/main.js
-         {:entries [starter.browser]}}
+   :modules
+   {:main ; becomes public/js/main.js
+    {:init-fn starter.browser/init}}}}}
 
-        ;; start a development http server on http://localhost:8020
-        :devtools
-        {:http-root "public"
-         :http-port 8020}
-        }}}
 ```
 
 It defines the `:app` build with the `:target` set to `:browser`. All output will be written to `public/js` which is a path relative to the project root (ie. the directory the `shadow-cljs.edn` config is in).
 
 `:modules` defines the how the output should be bundled together. For now we just want one file. The `:main` module will be written to `public/js/main.js`, it will include the code from the `:entries` and all their dependencies.
 
-`:devtools` configures some useful development things. The `http://localhost:8020` server we used earlier is controlled by the `:http-port` and serves the `:http-root` directory.
-
-The last part is the actual `index.html` that is loaded when you open `http://localhost:8020`. It loads the generated `/js/main.js` and then calls `start.browser.init` which we defined in the `src/start/browser.cljs`.
+The last part is the actual `index.html` that is loaded when you open `http://localhost:8020`. It loads the generated `/js/main.js` and then calls `start.browser.init` which we defined in the `src/main/start/browser.cljs`.
 
 ```html
-<!doctype html>
-<html>
-<head><title>Browser Starter</title></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Browser Starter</title>
+</head>
 <body>
 <h1>shadow-cljs - Browser</h1>
 <div id="app"></div>
-
+<noscript>You need to enable JavaScript to run this app.</noscript>
 <script src="/js/main.js"></script>
-<script>starter.browser.init();</script>
 </body>
 </html>
 ```
 
 ## Live reload
 
-To see the live reload in action you can edit the `src/start/browser.cljs`. Some output will be printed in the browser console.
+To see the live reload in action you can edit the `src/main/start/browser.cljs`. Some output will be printed in the browser console.
 
 ## REPL
 
@@ -101,9 +106,9 @@ During development it the REPL is very useful.
 From the command line use `npx shadow-cljs cljs-repl app`.
 
 ```
-shadow-cljs - config .../shadow-cljs.edn version: 2.2.16
+shadow-cljs - config .../shadow-cljs.edn
 shadow-cljs - connected to server
-[2:1]~cljs.user=>
+cljs.user=>
 ```
 
 This can now be used to eval code in the browser (assuming you still have it open). Try `(js/alert "Hi.")` and take it from there. You might want to use `rlwrap npx shadow-cljs cljs-repl app` if you intend to type a lot here.
