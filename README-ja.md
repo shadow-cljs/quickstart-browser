@@ -1,6 +1,6 @@
 # shadow-cljs - ブラウザ・クイックスタート
 
-これはブラウザ上で動作するCLJSプロジェクトで利用できる最小限のテンプレートです。
+ブラウザ上で動作するCLJSプロジェクトで利用できる最小限のテンプレートです。
 
 ## 必要なソフトウェア
 
@@ -23,17 +23,17 @@ npm install
 npx shadow-cljs server
 ```
 
-以上により `shadow-cljs` サーバープロセスが実行され、以下のすべてのコマンドはこのプロセスに応答します。
+以上により `shadow-cljs` サーバープロセスが実行され、以下のすべてのコマンドはこのプロセスと応答します。
 このプロセスを実行したまま、新しいターミナルを開いて続行してください。
 
 最初の起動は、すべての依存関係をダウンロードして準備作業を行う必要があるため、少し時間がかかります。
-これが実行されると、すぐに始められます。
+これが実行されると、すぐに開発を始められます。
 
 ```txt
 npx shadow-cljs watch app
 ```
 
-これにより設定された `:app` ビルドのコンパイルが開始して、ファイルを変更するたびに再コンパイルします。
+これにより、設定された `:app` ビルドのコンパイルが開始して、ファイルを変更するたびに再コンパイルします。
 
 "Build completed." というメッセージが表示されたら、ビルドを使用する準備が整いました。
 
@@ -41,15 +41,15 @@ npx shadow-cljs watch app
 [:app] Build completed. (23 files, 4 compiled, 0 warnings, 7.41s)
 ```
 
-では [http://localhost:8020](http://localhost:8020)を開きましょう。
+では [http://localhost:8020](http://localhost:8020) を開きましょう。
 
 このアプリは、最も便利な開発ツールが設定された基本的なスケルトンに過ぎません。
 
-`shadow-cljs` の設定は `shadow-cljs.edn` でします。次のようなものです。
+`shadow-cljs` の設定は、以下のように `shadow-cljs.edn` で行います。
 
 ```clojure
 ;; shadow-cljs の設定
-{:source-paths ; .cljs ファイルはここで指定します
+{:source-paths ; .cljs ファイルをここでに指定します
  ["src/dev"
   "src/main"
   "src/test"] 
@@ -61,26 +61,26 @@ npx shadow-cljs watch app
  {8020 "public"}
 
  :builds
- {:app ; build identifier
+ {:app ; ビルド識別子
   {:target :browser
    :output-dir "public/js"
    :asset-path "/js"
 
    :modules
-   {:main ; becomes public/js/main.js
+   {:main ; public/js/main.js になります
     {:init-fn starter.browser/init}}}}}
 ```
 
-この設定では、`:target` を `:browser` に設定した `:app` ビルドを定義します。
+この設定では、`:target` が `:browser` に設定された `:app` ビルドを定義します。
 すべての出力は `public/js` に書き込まれます。
 これはプロジェクトのルートからの相対パスです。つまり、`shadow-cljs.edn` の設定があるディレクトリからの相対パスです。
 
-`:modules` は、出力をどのようにまとめるかを定義します。
-今のところ、1つのファイルだけが必要です。
+`:modules` は、どのように出力をまとめるかを定義します。
+今のところ、必要なファイルは1つだけです。
 `main` モジュールは `public/js/main.js` に書き込まれ、`:entrices` のコードと、それらの依存関係をすべて含みます。
 
-最後の部分は、`http://localhost:8020` を開いたときに読み込まれる実際の `index.html` です。
-この index ファイルは、生成された `js/main.js` をロードして、`src/main/start/browser.cljs` で定義された `start.browser.init` を呼び出します。
+最後に `http://localhost:8020` を開いたときに読み込まれる実際の `index.html` を見てみましょう。
+index.html は、生成された `js/main.js` をロードして、`src/main/start/browser.cljs` で定義された `start.browser.init` を呼び出します。
 
 ```html
 <!DOCTYPE html>
@@ -108,7 +108,7 @@ npx shadow-cljs watch app
 
 ## REPL
 
-開発時には、REPLが非常に便利です。
+開発時にはREPLが非常に便利です。
 
 コマンドラインから`npx shadow-cljs cljs-repl app`を使用します。
 
