@@ -48,16 +48,16 @@ npx shadow-cljs watch app
 `shadow-cljs` の設定は `shadow-cljs.edn` でします。次のようなものです。
 
 ```clojure
-;; shadow-cljs configuration
-{:source-paths ; .cljs files go here
+;; shadow-cljs の設定
+{:source-paths ; .cljs ファイルはここで指定します
  ["src/dev"
   "src/main"
   "src/test"] 
 
- :dependencies ; covered later
+ :dependencies ; 後ほど説明します
  [] 
 
- :dev-http ; starts a http dev server on http://localhost:8020 and serves `public`
+ :dev-http ; http://localhost:8020 上で http 開発用サーバーを起動し、`public` をサーブします。
  {8020 "public"}
 
  :builds
